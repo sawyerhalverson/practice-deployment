@@ -1,8 +1,7 @@
-import express, { Application, Request, Response } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import exampleRoute from './routes/exampleRoute';
-
+import express, { Application, Request, Response } from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import exampleRoute from "./routes/exampleRoute";
 
 // Load environment variables
 dotenv.config();
@@ -11,16 +10,22 @@ const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
 app.use(express.json());
 
-
-app.use('/api', exampleRoute);
-
+app.use("/api", exampleRoute);
 
 // Routes
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript + Node.js backend 🚀');
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello, TypeScript + Node.js backend 🚀");
+});
+
+app.get("/api/data", (req, res) => {
+  res.json({ message: "Hello from the backend!" });
 });
 
 // Start the server

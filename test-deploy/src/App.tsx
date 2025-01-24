@@ -1,10 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [backendMessage, setBackendMessage] = useState("");
+
+  useEffect(() => {
+    // Fetch data from the backend
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/data`)
+      .then((response) => response.json())
+      .then((data) => setBackendMessage(data.message))
+      .catch((error) => console.error("Error fetching backend data:", error));
+  }, []); // Empty dependency array means this runs once on component mount
 
   return (
     <>
@@ -24,12 +33,15 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
+        <p>
+          {backendMessage ? `Backend says: ${backendMessage}` : "Loading..."}
+        </p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
