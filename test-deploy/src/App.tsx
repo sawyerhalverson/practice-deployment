@@ -6,15 +6,28 @@ import "./App.css";
 function App() {
   const [count, setCount] = useState(0);
   const [backendMessage, setBackendMessage] = useState("");
-
   useEffect(() => {
-    // Fetch data from the backend
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/data`)
-      .then((response) => response.json())
-      .then((data) => setBackendMessage(data.message))
-      .catch((error) => console.error("Error fetching backend data:", error));
-  }, []); // Empty dependency array means this runs once on component mount
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/data`
+        );
+        console.log("Response status:", response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Data received:", data);
+        setBackendMessage(data.message);
+      } catch (error) {
+        console.error("Fetch error details:", error);
+        setBackendMessage("Error connecting to backend");
+      }
+    };
 
+    console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+    fetchData();
+  }, []);
   return (
     <>
       <div>
