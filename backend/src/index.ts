@@ -17,7 +17,6 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/api", exampleRoute);
 
 // Routes
 app.get("/", (req: Request, res: Response) => {
