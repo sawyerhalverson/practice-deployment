@@ -1,14 +1,27 @@
-import "./App.css";
+import { useState } from "react";
+import Title from "./components/Title";
+import ImageUpload from "./components/ImageUpload";
+import ImageAnalyzer from "./components/ImageAnalyzer";
 
 function App() {
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+
+  const handleImageUpload = (file: File) => {
+    setUploadedImage(file);
+  };
+
   return (
-    <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800">Basic app</h1>
+    <div className="min-h-screen bg-gray-50">
+      <div className="pt-8 text-center">
+        <Title>Flip Report</Title>
+      </div>
+      <div className="p-12">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <ImageUpload onImageUpload={handleImageUpload} />
+          <ImageAnalyzer image={uploadedImage} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
